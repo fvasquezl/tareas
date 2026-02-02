@@ -1185,6 +1185,442 @@ vendor/bin/sail artisan filament:upgrade
 
 ---
 
+## Control de Versiones con Git y GitHub
+
+### Configuración Inicial del Repositorio
+
+Este proyecto está configurado con Git y alojado en GitHub:
+
+**Repositorio:** https://github.com/fvasquezl/tareas
+**Branch principal:** main
+**Visibilidad:** Público
+
+#### Inicialización del Repositorio
+```bash
+# Inicializar git (ya realizado)
+git init
+git branch -m main
+
+# Verificar configuración
+git config user.name
+git config user.email
+
+# Configurar usuario si es necesario
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu@email.com"
+```
+
+#### Primer Commit
+```bash
+# Agregar todos los archivos
+git add .
+
+# Crear commit inicial
+git commit -m "Initial commit: Laravel 12 Task Management Application
+
+Setup complete Laravel 12 application with:
+- Filament admin panel for task management
+- Task model with priority, status, and due date
+- SQLite database configuration
+- Laravel Sail (Docker) development environment
+- Tailwind CSS v4 frontend
+- PHPUnit testing setup
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+```
+
+### GitHub CLI (gh)
+
+Este proyecto utiliza GitHub CLI para gestión automatizada del repositorio.
+
+#### Instalación de GitHub CLI
+```bash
+# Arch Linux
+sudo pacman -S github-cli
+
+# Si hay conflictos con mailcap
+sudo pacman -S github-cli --overwrite '*'
+
+# Ubuntu/Debian
+sudo apt install gh
+
+# macOS
+brew install gh
+```
+
+#### Autenticación
+```bash
+# Iniciar sesión en GitHub
+gh auth login
+
+# Verificar estado de autenticación
+gh auth status
+
+# Cerrar sesión
+gh auth logout
+```
+
+#### Comandos Útiles de GitHub CLI
+```bash
+# Ver información del repositorio
+gh repo view
+
+# Abrir repositorio en el navegador
+gh repo view --web
+
+# Ver issues
+gh issue list
+
+# Crear un issue
+gh issue create
+
+# Ver pull requests
+gh pr list
+
+# Crear un pull request
+gh pr create
+
+# Ver checks/actions
+gh run list
+
+# Ver workflow runs
+gh run view
+```
+
+### Workflow de Desarrollo con Git
+
+#### Comandos Básicos Diarios
+```bash
+# Ver estado actual
+git status
+
+# Ver diferencias sin staging
+git diff
+
+# Ver diferencias staged
+git diff --cached
+
+# Agregar archivos específicos
+git add ruta/al/archivo.php
+
+# Agregar todos los archivos modificados
+git add .
+
+# Crear commit
+git commit -m "Descripción del cambio"
+
+# Subir cambios al repositorio remoto
+git push
+
+# Bajar cambios del repositorio remoto
+git pull
+```
+
+#### Trabajo con Branches
+```bash
+# Ver branches locales
+git branch
+
+# Ver branches remotos
+git branch -r
+
+# Crear nuevo branch
+git checkout -b feature/nueva-funcionalidad
+
+# Cambiar de branch
+git checkout main
+
+# Subir branch al remoto
+git push -u origin feature/nueva-funcionalidad
+
+# Eliminar branch local
+git branch -d feature/nombre
+
+# Eliminar branch remoto
+git push origin --delete feature/nombre
+
+# Mergear branch a main
+git checkout main
+git merge feature/nombre
+```
+
+#### Historial y Logs
+```bash
+# Ver historial de commits
+git log
+
+# Ver historial compacto
+git log --oneline
+
+# Ver historial gráfico
+git log --graph --oneline --all
+
+# Ver cambios en un commit específico
+git show <commit-hash>
+
+# Ver quién modificó cada línea
+git blame archivo.php
+```
+
+#### Deshacer Cambios
+```bash
+# Descartar cambios en archivo (sin staging)
+git checkout -- archivo.php
+
+# Descartar todos los cambios sin staging
+git checkout -- .
+
+# Quitar archivo del staging
+git reset HEAD archivo.php
+
+# Deshacer último commit (mantener cambios)
+git reset --soft HEAD~1
+
+# Deshacer último commit (eliminar cambios)
+git reset --hard HEAD~1
+
+# Revertir un commit específico
+git revert <commit-hash>
+```
+
+### Convenciones de Commits
+
+Este proyecto sigue el formato de commits convencionales:
+
+#### Estructura del Mensaje
+```
+<tipo>: <descripción breve>
+
+<descripción detallada opcional>
+
+<footer opcional>
+```
+
+#### Tipos de Commits
+- **feat**: Nueva funcionalidad
+- **fix**: Corrección de bug
+- **docs**: Cambios en documentación
+- **style**: Cambios de formato (no afectan código)
+- **refactor**: Refactorización de código
+- **test**: Agregar o modificar tests
+- **chore**: Tareas de mantenimiento
+
+#### Ejemplos
+```bash
+# Nueva funcionalidad
+git commit -m "feat: agregar filtro de tareas por fecha de vencimiento"
+
+# Corrección de bug
+git commit -m "fix: corregir validación de fecha en TaskForm"
+
+# Documentación
+git commit -m "docs: actualizar README con instrucciones de instalación"
+
+# Refactorización
+git commit -m "refactor: extraer lógica de estadísticas a TaskService"
+
+# Tests
+git commit -m "test: agregar tests para TaskPriority enum"
+
+# Mantenimiento
+git commit -m "chore: actualizar dependencias de Filament a v5.1"
+```
+
+### Archivos Ignorados (.gitignore)
+
+El proyecto incluye un `.gitignore` configurado para Laravel:
+
+```gitignore
+# Archivos de log y sistema
+*.log
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+.env.backup
+.env.production
+
+# IDEs
+/.idea
+/.vscode
+/.fleet
+/.nova
+/.zed
+
+# Dependencias
+/node_modules
+/vendor
+
+# Build files
+/public/build
+/public/hot
+/public/storage
+
+# Cache y testing
+/.phpunit.cache
+.phpactor.json
+.phpunit.result.cache
+/storage/*.key
+/storage/pail
+```
+
+**Importante:** Nunca commitear:
+- Archivo `.env` (contiene datos sensibles)
+- Base de datos SQLite (`database.sqlite`)
+- Carpetas `vendor/` y `node_modules/`
+- Archivos de cache y logs
+
+### Comandos Git Avanzados
+
+#### Stashing (Guardar cambios temporalmente)
+```bash
+# Guardar cambios sin commit
+git stash
+
+# Ver stashes guardados
+git stash list
+
+# Recuperar último stash
+git stash pop
+
+# Recuperar stash específico
+git stash apply stash@{0}
+
+# Eliminar stash
+git stash drop stash@{0}
+```
+
+#### Tags (Versiones)
+```bash
+# Crear tag
+git tag -a v1.0.0 -m "Primera versión estable"
+
+# Listar tags
+git tag
+
+# Subir tag al remoto
+git push origin v1.0.0
+
+# Subir todos los tags
+git push --tags
+
+# Eliminar tag local
+git tag -d v1.0.0
+
+# Eliminar tag remoto
+git push origin --delete v1.0.0
+```
+
+#### Configuración del Remoto
+```bash
+# Ver remotos configurados
+git remote -v
+
+# Agregar remoto
+git remote add origin https://github.com/fvasquezl/tareas.git
+
+# Cambiar URL del remoto
+git remote set-url origin https://github.com/fvasquezl/tareas.git
+
+# Eliminar remoto
+git remote remove origin
+```
+
+### Workflow Recomendado para Nuevas Features
+
+```bash
+# 1. Asegurarse de estar en main actualizado
+git checkout main
+git pull origin main
+
+# 2. Crear branch para la feature
+git checkout -b feature/nombre-descriptivo
+
+# 3. Realizar cambios y commits
+# ... hacer modificaciones ...
+git add .
+git commit -m "feat: descripción del cambio"
+
+# 4. Subir branch al remoto
+git push -u origin feature/nombre-descriptivo
+
+# 5. Crear pull request (usando GitHub CLI)
+gh pr create --title "Título del PR" --body "Descripción detallada"
+
+# 6. Después de aprobación, mergear
+gh pr merge
+
+# 7. Volver a main y actualizar
+git checkout main
+git pull origin main
+
+# 8. Eliminar branch local
+git branch -d feature/nombre-descriptivo
+```
+
+### Solución de Problemas Comunes
+
+#### Conflictos al hacer pull
+```bash
+# 1. Hacer pull (aparecerán conflictos)
+git pull
+
+# 2. Resolver conflictos manualmente en los archivos
+# Los conflictos se marcan con:
+# <<<<<<< HEAD
+# tus cambios
+# =======
+# cambios remotos
+# >>>>>>> branch
+
+# 3. Marcar como resueltos
+git add archivo-con-conflicto.php
+
+# 4. Completar el merge
+git commit -m "merge: resolver conflictos con main"
+```
+
+#### Push rechazado
+```bash
+# Si el push es rechazado porque hay cambios remotos:
+git pull --rebase origin main
+git push
+```
+
+#### Recuperar commit eliminado
+```bash
+# Ver historial completo (incluyendo eliminados)
+git reflog
+
+# Recuperar commit
+git checkout <commit-hash>
+git checkout -b branch-recuperado
+```
+
+### Integración Continua (Preparación)
+
+El proyecto está listo para configurar CI/CD con GitHub Actions:
+
+```yaml
+# .github/workflows/laravel.yml (ejemplo)
+name: Laravel Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          composer install
+          php artisan test
+```
+
+---
+
 ## Recursos Adicionales
 
 ### Documentación Oficial
