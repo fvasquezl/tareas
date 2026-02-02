@@ -4,7 +4,7 @@
             <article class="task-card">
                 <x-filament::section>
                     {{-- Header del Card --}}
-                    <div class="flex items-start justify-between gap-4 mb-4">
+                    <div class="flex items-start justify-between gap-4 pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-lg font-semibold text-gray-950 dark:text-white truncate">
                                 {{ $record->title }}
