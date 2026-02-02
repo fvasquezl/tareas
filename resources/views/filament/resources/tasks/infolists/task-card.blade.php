@@ -18,7 +18,7 @@
 
         {{-- Botón de Editar --}}
         <x-filament::icon-button
-            :href="$getTable()->getEditRecordUrl($record)"
+            :href="route('filament.admin.resources.tasks.edit', ['record' => $record])"
             icon="heroicon-o-pencil-square"
             color="gray"
             size="sm"

@@ -3,14 +3,18 @@
 namespace App\Filament\Resources\Tasks\Pages;
 
 use App\Filament\Resources\Tasks\TaskResource;
+use App\Models\Task;
 use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\ListRecords;
-use Filament\Tables\Columns\ViewColumn;
-use Filament\Tables\Table;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\ViewEntry;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\Page;
 
-class ListTasks extends ListRecords
+class ListTasks extends Page
 {
     protected static string $resource = TaskResource::class;
+
+    protected static string $view = 'filament.resources.tasks.pages.list-tasks-infolist';
 
     protected function getHeaderActions(): array
     {
@@ -19,19 +23,24 @@ class ListTasks extends ListRecords
         ];
     }
 
-    public function table(Table $table): Table
+    public function infolist(Infolist $infolist): Infolist
     {
-        return $table
-            ->columns([
-                ViewColumn::make('card')
-                    ->view('filament.resources.tasks.columns.task-card'),
-            ])
-            ->contentGrid([
-                'md' => 2,
-                'xl' => 3,
-            ])
-            ->paginated([12, 24, 48])
-            ->defaultPaginationPageOption(12);
+        return $infolist
+            ->record(new \stdClass)
+            ->schema([
+                RepeatableEntry::make('tasks')
+                    ->label('')
+                    ->state(Task::with('user')->orderBy('due_date', 'asc')->get())
+                    ->schema([
+                        ViewEntry::make('card')
+                            ->view('filament.resources.tasks.infolists.task-card'),
+                    ])
+                    ->columns([
+                        'md' => 2,
+                        'xl' => 3,
+                    ])
+                    ->contained(false),
+            ]);
     }
 
     protected function getListeners(): array
@@ -44,7 +53,7 @@ class ListTasks extends ListRecords
 
     public function updateTaskPriority($taskId, $priority): void
     {
-        $task = \App\Models\Task::find($taskId);
+        $task = Task::find($taskId);
 
         if ($task) {
             $task->update(['priority' => $priority]);
@@ -54,12 +63,14 @@ class ListTasks extends ListRecords
                 ->title('Prioridad actualizada')
                 ->body('La prioridad de la tarea ha sido actualizada.')
                 ->send();
+
+            $this->dispatch('$refresh');
         }
     }
 
     public function toggleTaskCompleted($taskId): void
     {
-        $task = \App\Models\Task::find($taskId);
+        $task = Task::find($taskId);
 
         if ($task) {
             $task->update(['completed' => ! $task->completed]);
@@ -69,6 +80,8 @@ class ListTasks extends ListRecords
                 ->title('Estado actualizado')
                 ->body($task->completed ? 'Tarea marcada como completada.' : 'Tarea marcada como pendiente.')
                 ->send();
+
+            $this->dispatch('$refresh');
         }
     }
 }
