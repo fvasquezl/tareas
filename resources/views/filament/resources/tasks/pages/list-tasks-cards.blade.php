@@ -1,7 +1,8 @@
 <x-filament-panels::page>
     <div class="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         @forelse ($this->getTasks() as $record)
-            <div class="fi-card bg-white dark:bg-gray-800 rounded-xl shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10 overflow-hidden">
+            <article class="task-card">
+                <div class="fi-card bg-white dark:bg-gray-800 rounded-xl shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10 overflow-hidden">
                 {{-- Header del Card --}}
                 <div class="p-6 pb-4">
                     <div class="flex items-start justify-between gap-4">
@@ -116,7 +117,8 @@
                         @endif
                     </div>
                 </div>
-            </div>
+                </div>
+            </article>
         @empty
             <div class="col-span-full">
                 <div class="text-center py-12">
