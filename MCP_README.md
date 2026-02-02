@@ -39,6 +39,63 @@ Activa el modo "Laravel Expert" - Un desarrollador Senior PHP/Laravel con 10+ a�
 
 ## Tools Disponibles
 
+### Categoría: Monitoreo Inteligente
+
+#### 0. MonitorAndDelegate (🆕 Sistema Integrado)
+**Sistema de monitoreo y delegación inteligente** que conecta el monitoreo con el Laravel Expert.
+
+**Funcionalidad:**
+- Escanea logs automáticamente
+- Detecta y clasifica errores por criticidad (🔴 Crítico, 🟠 Alto, 🟡 Medio)
+- Analiza código relacionado al error
+- Determina causa raíz probable
+- **Sugiere qué tool usar y cómo** (ReviewCodeSenior, AnalyzeCode, LaravelExpert, etc.)
+- Prepara workflow completo de corrección
+
+**Parámetros:**
+- `mode` (enum): Tipo de escaneo: `recent`, `critical`, `all`
+- `lines` (integer): Líneas del log a analizar (por defecto: 500)
+- `auto_fix` (boolean): Preparar para corrección automática (por defecto: false)
+
+**Detecta:**
+- Database errors (SQLSTATE, constraint violations)
+- Class/Method not found
+- Undefined variables/properties
+- Syntax errors
+- Permission errors
+- Connection timeouts
+- N+1 query patterns
+
+**Output:**
+- Resumen ejecutivo con conteo por prioridad
+- Análisis detallado de cada error con:
+  - Timestamp y ubicación (archivo:línea)
+  - Stack trace completo
+  - Análisis del código relacionado
+  - Causa raíz probable
+  - **🎯 Comandos específicos de delegación al experto**
+- Workflow recomendado paso a paso
+- Comandos útiles para corrección
+
+**Ejemplo de uso:**
+```json
+{
+  "mode": "critical",
+  "lines": 1000,
+  "auto_fix": true
+}
+```
+
+**Flujo de trabajo:**
+```
+MonitorAndDelegate → Detecta error → Analiza código →
+Sugiere tool específico → LaravelExpert → Solución con TDD
+```
+
+---
+
+### Categoría: Monitoreo Básico
+
 ### 1. ReadLaravelLogs
 Monitorea y analiza logs de Laravel en tiempo real.
 
@@ -235,14 +292,21 @@ Una vez configurado, puedes usar los tools desde Claude Desktop:
 
 **Ejemplos de prompts:**
 
-### Monitoreo y Análisis
-1. **Monitorear errores:**
+### Monitoreo Inteligente y Delegación
+1. **Monitoreo automático con delegación:**
+   > "Monitorea los errores críticos del sistema y prepara reporte para el experto"
+
+2. **Escaneo completo:**
+   > "Escanea todos los errores recientes y sugiere qué hacer con cada uno"
+
+### Monitoreo Básico
+3. **Monitorear errores:**
    > "Lee los últimos errores del log de Laravel"
 
-2. **Analizar código:**
+4. **Analizar código:**
    > "Analiza el archivo app/Models/Task.php en busca de problemas de seguridad"
 
-3. **Sugerencias de optimización:**
+5. **Sugerencias de optimización:**
    > "Dame sugerencias de optimización para la configuración de cache"
 
 ### Laravel Expert Mode
@@ -340,6 +404,10 @@ chmod -R 755 storage/logs
 - [x] Tool para generar código con TDD (GenerateCodeWithTests)
 - [x] Tool para documentar código automáticamente (DocumentCode)
 - [x] Tool para code review nivel senior (ReviewCodeSenior)
+- [x] Sistema de monitoreo y delegación inteligente (MonitorAndDelegate)
+- [x] Integración completa entre monitoreo y experto
+- [x] Análisis automático de causa raíz de errores
+- [x] Sugerencias específicas de delegación por tipo de error
 
 ### En Roadmap
 - [ ] Tool para análisis de performance con Laravel Telescope
@@ -352,7 +420,7 @@ chmod -R 755 storage/logs
 
 ## Sistema Laravel Expert
 
-El sistema Laravel Expert es un conjunto integrado de herramientas MCP diseñado para proporcionar asistencia de nivel senior en desarrollo Laravel.
+El sistema Laravel Expert es un conjunto integrado de herramientas MCP diseñado para proporcionar asistencia de nivel senior en desarrollo Laravel, con **monitoreo inteligente y delegación automática**.
 
 ### Filosofía
 
@@ -362,8 +430,79 @@ El sistema está diseñado basándose en:
 - **TDD estricto** con coverage mínimo del 85%
 - **SOLID principles** y Clean Architecture
 - **Documentación IEEE** con PHPDoc completo
+- **🆕 Monitoreo proactivo** con delegación inteligente
+
+### Arquitectura del Sistema
+
+```
+┌─────────────────────────────────────────────────────────┐
+│               MONITOREO INTELIGENTE                     │
+│         MonitorAndDelegate (Triage System)              │
+│   - Detecta errores automáticamente                     │
+│   - Analiza código relacionado                          │
+│   - Determina causa raíz                                │
+│   - Prioriza por criticidad                             │
+└────────────────────┬────────────────────────────────────┘
+                     │ Delega
+                     ↓
+┌─────────────────────────────────────────────────────────┐
+│           LARAVEL EXPERT (Senior Dev Agent)             │
+│   - Analiza contexto completo del error                 │
+│   - Diseña solución con arquitectura apropiada          │
+└────────────────────┬────────────────────────────────────┘
+                     │ Usa
+                     ↓
+┌─────────────────────────────────────────────────────────┐
+│              TOOLS ESPECIALIZADOS                       │
+│  ┌───────────────────────────────────────────────┐     │
+│  │ GenerateCodeWithTests → Genera código con TDD │     │
+│  │ DocumentCode → Documenta código IEEE          │     │
+│  │ ReviewCodeSenior → Code review Fortune 500    │     │
+│  │ AnalyzeCode → Analiza security & performance  │     │
+│  └───────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────┘
+```
 
 ### Workflow Recomendado
+
+#### 🆕 Workflow Automático (con Monitoreo)
+
+**Para sistemas en producción/desarrollo activo:**
+
+1. **Monitoreo Continuo**
+   ```
+   MonitorAndDelegate mode='recent'
+   → Detecta errores automáticamente
+   → Analiza y clasifica por prioridad
+   → Sugiere tool específico para cada error
+   ```
+
+2. **Delegación al Experto**
+   ```
+   Usa los comandos sugeridos por MonitorAndDelegate:
+   - LaravelExpert context='bugfix' task='...'
+   - ReviewCodeSenior file='...' focus='security'
+   - AnalyzeCode file='...' type='full'
+   ```
+
+3. **Implementación de Solución**
+   ```
+   El experto usa GenerateCodeWithTests para:
+   - Crear tests que reproduzcan el bug (RED)
+   - Implementar fix que pase tests (GREEN)
+   - Refactorizar y optimizar (REFACTOR)
+   ```
+
+4. **Verificación**
+   ```
+   - Ejecutar tests completos
+   - Re-ejecutar MonitorAndDelegate
+   - Confirmar que el error desapareció
+   ```
+
+#### Workflow Manual (sin Monitoreo)
+
+**Para desarrollo de nuevas features:**
 
 1. **Activar Modo Experto**
    ```
