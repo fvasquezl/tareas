@@ -7,11 +7,15 @@ use App\Models\Task;
 use Filament\Actions\CreateAction;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\ViewEntry;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
+use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\Page;
 
-class ListTasks extends Page
+class ListTasks extends Page implements HasInfolists
 {
+    use InteractsWithInfolists;
+
     protected static string $resource = TaskResource::class;
 
     public function getView(): string
