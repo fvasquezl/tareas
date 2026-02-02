@@ -3,19 +3,14 @@
 namespace App\Filament\Resources\Tasks\Pages;
 
 use App\Filament\Resources\Tasks\TaskResource;
-use App\Models\Task;
 use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\Page;
-use Illuminate\Contracts\Pagination\Paginator;
+use Filament\Resources\Pages\ListRecords;
+use Filament\Tables\Columns\ViewColumn;
+use Filament\Tables\Table;
 
-class ListTasks extends Page
+class ListTasks extends ListRecords
 {
     protected static string $resource = TaskResource::class;
-
-    public function getView(): string
-    {
-        return 'filament.resources.tasks.pages.list-tasks-cards';
-    }
 
     protected function getHeaderActions(): array
     {
@@ -24,16 +19,32 @@ class ListTasks extends Page
         ];
     }
 
-    public function getTasks(): Paginator
+    public function table(Table $table): Table
     {
-        return Task::with('user')
-            ->orderBy('due_date', 'asc')
-            ->simplePaginate(12);
+        return $table
+            ->columns([
+                ViewColumn::make('card')
+                    ->view('filament.resources.tasks.columns.task-card'),
+            ])
+            ->contentGrid([
+                'md' => 2,
+                'xl' => 3,
+            ])
+            ->paginated([12, 24, 48])
+            ->defaultPaginationPageOption(12);
     }
 
-    public function updatePriority(int $taskId, string $priority): void
+    protected function getListeners(): array
     {
-        $task = Task::find($taskId);
+        return [
+            'updateTaskPriority',
+            'toggleTaskCompleted',
+        ];
+    }
+
+    public function updateTaskPriority($taskId, $priority): void
+    {
+        $task = \App\Models\Task::find($taskId);
 
         if ($task) {
             $task->update(['priority' => $priority]);
@@ -46,9 +57,9 @@ class ListTasks extends Page
         }
     }
 
-    public function toggleCompleted(int $taskId): void
+    public function toggleTaskCompleted($taskId): void
     {
-        $task = Task::find($taskId);
+        $task = \App\Models\Task::find($taskId);
 
         if ($task) {
             $task->update(['completed' => ! $task->completed]);
