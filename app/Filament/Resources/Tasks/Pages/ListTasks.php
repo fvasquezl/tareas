@@ -14,7 +14,10 @@ class ListTasks extends Page
 {
     protected static string $resource = TaskResource::class;
 
-    protected static string $view = 'filament.resources.tasks.pages.list-tasks-infolist';
+    public function getView(): string
+    {
+        return 'filament.resources.tasks.pages.list-tasks-infolist';
+    }
 
     protected function getHeaderActions(): array
     {
