@@ -18,8 +18,8 @@
 
                         {{-- Botón de Editar --}}
                         <a href="{{ route('filament.admin.resources.tasks.edit', ['record' => $record]) }}"
-                           class="fi-icon-btn shrink-0 flex items-center justify-center rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 h-9 w-9">
-                            <svg class="fi-icon-btn-icon h-5 w-5 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                           class="fi-icon-btn shrink-0 flex items-center justify-center rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 h-8 w-8">
+                            <svg class="fi-icon-btn-icon h-4 w-4 text-gray-400 dark:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
                                 <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
                             </svg>
@@ -120,7 +120,7 @@
         @empty
             <div class="col-span-full">
                 <div class="text-center py-12">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="mx-auto h-10 w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                     <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No hay tareas</h3>
